@@ -25,7 +25,7 @@ az group create --location westeurope --name <rgname>
 az deployment group what-if --resource-group <rgname> --template-file ./bicep/main.bicep --parameters ./bicep/parameters_example.json
 ```
 
-3. Run deployment
+3. Run deployment:
 ```Powershell
 az deployment group create --resource-group <rgname> --template-file ./bicep/main.bicep --parameters ./bicep/parameters_example.json
 ```
