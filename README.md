@@ -1,4 +1,5 @@
-# Prerequisites
+# Deployment
+## Prerequisites
 
 1. Install Azure CLI: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
 2. Install Bicep:
@@ -12,7 +13,7 @@ az login --tenant <tenantid>
 az account set --subscription <subscriptionid>
 ```
 
-# Azure infrastructure deployment with Bicep
+## Azure resources
 
 1. Create a resource group, skip this step if you are using an existing resource group:
 ```Powershell
@@ -29,7 +30,7 @@ az deployment group what-if --resource-group <rgname> --template-file ./bicep/ma
 az deployment group create --resource-group <rgname> --template-file ./bicep/main.bicep --parameters ./bicep/parameters_example.json
 ```
 
-# Azure Function App deployment with Azure Functions Core Tools
+## Functions
 
 Deploy function app:
 ```Powershell
