@@ -5,8 +5,8 @@
 ```Powershell
 az bicep install
 ```
-4. Install Azure Functions Core Tools: https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local
-5. Log in to your AAD tenant and select subscription:
+3. Install Azure Functions Core Tools: https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local
+4. Log in to your AAD tenant and select subscription:
 ```Powershell
 az login --tenant <tenant-id>
 az account set --subscription <subscription-id>
