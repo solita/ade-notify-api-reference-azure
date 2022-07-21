@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "app": {
+            "value": "adenotifier234"
+        },
+        "env": {
+            "value": "dev"
+        },
+        "location": {
+            "value": "westeurope"
+        },
+        "notifyApiBaseUrl": {
+            "value": "https://external-api.dev.datahub.s1234567.saas.agiledataengine.com:443/notify-api"
+        },
+        "systemTopicName": {
+            "value": "evgt-examplesystemtopic"
+        },
+        "systemTopicRg": {
+            "value": "rg-examplesystemtopicrg"
+        }
+    }
+}
