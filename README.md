@@ -1,3 +1,14 @@
+# Introduction
+This repository contains a reference solution for notifying incoming source data files for Agile Data Engine Notify API (https://ade.document360.io/docs/notify-api) in Azure. The repository is provided for reference purposes only and the solution may require modifications to fit your use case. Please use at your own caution.
+
+# Dependencies
+The solution uses the [adenotifier](https://github.com/solita/adenotifier) Python library. Please specify a version in ./functionapp/requirements.txt to prevent issues with library upgrades.
+
+# Architecture
+- Image
+- Azure Functions premium plan
+    - Network, NAT, static public IP
+
 # Deployment
 ## Prerequisites
 
@@ -37,3 +48,17 @@ Deploy function app:
 cd functionapp
 func azure functionapp publish <appname>
 ```
+
+# Configuration
+
+In progress...
+
+- Set Notify API key & secret to Key Vault
+- Provide private IP to Agile Data Engine support
+- Configure data sources in the configuration file "datasources.json"
+- Create an event subscription for the system topic
+    - Bicep example
+
+# Testing
+- Test file
+- ADE instructions
