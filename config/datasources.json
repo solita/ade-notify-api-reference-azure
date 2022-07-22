@@ -1,0 +1,37 @@
+[    
+    {
+        "id": "example_source/example_entity_1",
+        "attributes": {
+            "ade_source_entity": "example_entity_1",
+            "ade_source_system": "example_source",
+            "file_extension": ".json",
+            "folder_path": "example_source/example_entity_1/",
+            "storage_account": "examplestorageaccount",
+            "storage_container": "examplecontainer",
+            "single_file_manifest": false,
+            "batch_from_file_path_regex": "batch\\.(\\d*)\\.json"
+        },
+        "manifest_parameters": {
+            "format": "JSON",
+            "fullscanned": false
+        }
+    },
+    {
+        "id": "example_source/example_entity_2",
+        "attributes": {
+            "ade_source_entity": "example_entity_2",
+            "ade_source_system": "example_source",
+            "file_extension": ".csv",
+            "folder_path": "example_source/example_entity_2/",
+            "storage_account": "examplestorageaccount",
+            "storage_container": "examplecontainer",
+            "single_file_manifest": true
+        },
+        "manifest_parameters": {
+            "delim": "PIPE",
+            "format": "CSV",
+            "fullscanned": false,
+            "skiph": 1
+        }
+    }
+]
