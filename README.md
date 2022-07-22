@@ -11,7 +11,14 @@ The solution uses the [adenotifier](https://github.com/solita/adenotifier) Pytho
 
 # Deployment
 ## Prerequisites
+### Event Grid System Topic
+1. Create an Event Grid system topic for your source data storage account (if one does not exist yet) with one of the options:
+    * In the portal: https://docs.microsoft.com/en-us/azure/event-grid/create-view-manage-system-topics
+    * With Azure CLI https://docs.microsoft.com/en-us/azure/event-grid/create-view-manage-system-topics-cli
+    * With a template, e.g. https://docs.microsoft.com/en-us/azure/event-grid/create-view-manage-system-topics-arm
+2. Take note of the system topic name and resource group. These will be needed as Bicep template parameters.
 
+### Deployment tools
 1. Install Azure CLI: https://docs.microsoft.com/en-us/cli/azure/install-azure-cli
 2. Install Bicep:
 ```Powershell
@@ -25,20 +32,21 @@ az account set --subscription <subscriptionid>
 ```
 
 ## Azure resources
+1. Go through the Bicep template and the example parameter values. Format the template according to your needs and policies, set values for parameters.
 
-1. Create a resource group, skip this step if you are using an existing resource group:
+2. Create a resource group (skip if using an existing resource group):
 ```Powershell
 az group create --location westeurope --name <rgname>
 ```
 
-2. Run what-if to preview deployment:
+3. Run what-if to preview deployment, check output:
 ```Powershell
-az deployment group what-if --resource-group <rgname> --template-file ./bicep/main.bicep --parameters ./bicep/parameters_example.json
+az deployment group what-if --resource-group <rgname> --template-file ./bicep/main.bicep --parameters ./bicep/<parameter_file>.json
 ```
 
-3. Run deployment:
+4. Run deployment:
 ```Powershell
-az deployment group create --resource-group <rgname> --template-file ./bicep/main.bicep --parameters ./bicep/parameters_example.json
+az deployment group create --resource-group <rgname> --template-file ./bicep/main.bicep --parameters ./bicep/<parameter_file>.json
 ```
 
 ## Functions
@@ -51,14 +59,11 @@ func azure functionapp publish <appname>
 
 # Configuration
 
-In progress...
-
 - Set Notify API key & secret to Key Vault
 - Provide private IP to Agile Data Engine support
-- Configure data sources in the configuration file "datasources.json"
+- Configure data sources in the configuration file "datasources.json", place file in path datasource-config/datasources.json
 - Create an event subscription for the system topic
     - Bicep example
 
 # Testing
-- Test file
-- ADE instructions
+...
