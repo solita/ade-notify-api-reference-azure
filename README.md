@@ -14,14 +14,14 @@ This diagram presents the high-level architecture of the Agile Data Engine refer
 
 1. Source data files are created into a Storage Account Blob Container by an external process (i.e. not Agile Data Engine nor the Notifier). This source data storage account is not part of the Notifier solution and must be managed separately.
 2. There is an Event Grid System Topic on top of the storage account and an Event Grid Subscription filtering specific events from the system topic. These Event Grid resources are not part of the Notifier solution and must be managed separately. However, there are instructions on how to create/configure them below.
-3. The Event Grid Subscription filters BlobCreated events with set parameters and feeds them to the "notifier-trigger" Storage Queue.
-4. New messages in this queue trigger the "add_to_manifest" function in the Function App.
-5. The function gets the data source configuration file "datasource-config/datasources.json" from the Notifier storage account and compares the event url to the configured data sources.
+3. The Event Grid Subscription filters **BlobCreated** events with set parameters and feeds them to the **notifier-trigger** Storage Queue.
+4. New messages in this queue trigger the [add_to_manifest](functionapp/add_to_manifest/__init__.py) function in the Function App.
+5. The function gets the data source configuration file [datasource-config/datasources.json](config/datasources.json) from the Notifier storage account and compares the event url to the configured data sources.
 6. If the data source is identified, the function calls Notify API to search for open manifests for the data source.
 7. If open manifests are found, the function will add the file to the latest open manifest.
 8. If open manifests are not found, a new one will be created and the file added there.
-9. If single_file_manifest is set to true, the manifest will also be notified (closed).
-10. Notification of data sources where single_file_manifest is set to false is done with timer functions which are triggered on a schedule (cron), i.e. files are collected to an open manifest until a schedule triggers the notification (closing) of that manifest.
+9. If **single_file_manifest** is set to **true**, the manifest will also be notified (closed).
+10. Notification of data sources where **single_file_manifest** is set to **false** is done with timer functions which are triggered on a schedule (cron), i.e. files are collected to an open manifest until a schedule triggers the notification (closing) of that manifest.
 
 The notifying process is presented with more detail in this diagram:
 
@@ -119,7 +119,7 @@ Use at least the following settings when creating the event subscription:
 | Endpoint type | Storage queues | - |
 | Managed identity type | System assigned | - |
 | Enable subject filtering | true | - |
-| Subject begins with | /blobServices/default/containers/<source-data-container-name>/blobs/<optional-path-to-files> | Set <optional-path-to-files> if you do not want events from the entire container. | - |
+| Subject begins with | /blobServices/default/containers/source-data-container-name/blobs/optional-path-to-files | Set optional-path-to-files if you do not want events from the entire container. | - |
 | Advanced filters: data.ContentLength | > 0 | This prevents duplicate events. |
 
 There is a [Bicep template](config/event_subscription.bicep) and an example [parameter file](config/parameters_example.json) in the **config** folder which can be used to deploy the subscription. Format the template and set the parameters according to your setup.
@@ -128,3 +128,8 @@ Deploy the Event Grid subscription like the other resources above with:
 ```Powershell
 az deployment group create --resource-group <systemtopicrgname> --template-file ./config/event_subscription.bicep --parameters ./config/<parameter_file>.json
 ```
+
+## Timer trigger functions
+Notification of manifests of data sources where **single_file_manifest** is set to **false** must be scheduled with a timer trigger function. Otherwise files would only be collected to manifests, but the manifests would never be closed and loaded by Agile Data Engine.
+
+Use the [notify_timer_example](functionapp/notify_timer_example/__init__.py) function as reference and create as many timer trigger functions as needed. Duplicate the timer trigger function folder (e.g. notify_timer_example), set the schedule with a cron expression in [function.json](functionapp/notify_timer_example/function.json) and define a list of data sources to be notified in the **source_ids** variable in [__init.py__](functionapp/notify_timer_example/__init__.py). Source ids point to the source ids defined in the [datasources.json](config/datasources.json) configuration file.
