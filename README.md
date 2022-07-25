@@ -1,7 +1,7 @@
 # Introduction
 This repository contains a reference solution for notifying incoming source data files for Agile Data Engine Notify API (https://ade.document360.io/docs/notify-api) in Azure. The repository is provided for reference purposes only and the solution may require modifications to fit your use case. Please use at your own caution.
 
-Contents:
+**Contents:**
 - Bicep templates for deploying required Azure resources
 - Python functions for deploying a Notifier Function App
 
