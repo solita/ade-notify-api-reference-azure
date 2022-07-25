@@ -37,7 +37,7 @@ Notifying process in detail:
 - If you are deploying multiple environments and need to save costs, you can share the same ASP & network components between different Function Apps in different environments. This requires some changes to the Bicep template.
 
 # Dependencies
-The solution uses the [adenotifier](https://github.com/solita/adenotifier) Python library. Please specify a version in the [requirements.txt](functionapp/requirements.txt) to prevent issues with library upgrades.
+This solution uses the [adenotifier](https://github.com/solita/adenotifier) Python library. Please specify a version in [requirements.txt](functionapp/requirements.txt) to prevent issues with library upgrades.
 
 # Deployment
 ## Prerequisites
@@ -62,7 +62,7 @@ az account set --subscription <subscriptionid>
 ```
 
 ## Azure resources
-1. Go through the [Bicep template](bicep/main.bicep) and the [example parameter values](bicep/parameters_example.json). Format the template according to your needs and policies, set values for parameters.
+1. Go through the [Bicep template](bicep/main.bicep) and the [example parameter values](bicep/parameters_example.json). Modify the template according to your needs and policies, set values for parameters.
 
 2. Create a resource group (skip if using an existing resource group):
 ```Powershell
@@ -89,23 +89,23 @@ func azure functionapp publish <appname>
 
 # Configuration
 ## Update Notify API secrets in Key Vault
-The Key Vault secrets are deployed with dummy values and must be updated to the Notify API key and secret. Agile Data Engine support team will provide the secrets:
+Key Vault secrets are deployed with dummy values and must be replaced with the actual Notify API key and secret. Agile Data Engine support team will provide the secrets:
 - notify-api-key
 - notify-api-key-secret
 
-Note that you will need to assign a Key Vault access policy that allows secret management to yourself or a security group that you belong to. See [Microsoft documentation](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy) for detailed instructions.
+To be able to do this, you will need to assign a Key Vault access policy that allows secret management to yourself or a security group that you belong to. See [Microsoft documentation](https://docs.microsoft.com/en-us/azure/key-vault/general/assign-access-policy) for detailed instructions.
 
 ## Provide the public IP addresses to Agile Data Engine support
 Agile Data Engine support needs to add the public IP address to the allowed list before the deployed solution can connect to Notify API. If you have deployed multiple environments, provide IP addresses of each environment to the support team.
 
 ## Data source configuration
-Configure data sources into a configuration file **datasources.json** and upload it to the deployed storage account to path **datasource-config/datasources.json**. See specifications for the configuration format in the [adenotifier library readme](https://github.com/solita/adenotifier). Additionally configure the following attributes which are used for identifying the data source from incoming BlobCreated events:
+Configure data sources into a configuration file **datasources.json** and upload it to the deployed storage account to path **datasource-config/datasources.json**. See specifications for the configuration format in the [adenotifier library readme](https://github.com/solita/adenotifier). Additionally, configure the following attributes for each data source. They are used for identifying the data source from incoming BlobCreated events:
 
 | Attribute  | Mandatory | Description |
 | --- | --- | --- |
-| storage_account  | x | Storage account name of the source file. |
-| storage_container  | x | Blob container name of the source file. |
-| folder_path  | x | Folder path of the source file. |
+| storage_account  | x | Storage account name where the source file is located. |
+| storage_container  | x | Blob container name where the source file is located. |
+| folder_path  | x | Folder path to the source file. |
 | file_extension  | | Optional: File extension of the source file. |
 
 See configuration examples in [config/datasources.json](config/datasources.json).
@@ -134,4 +134,4 @@ az deployment group create --resource-group <systemtopicrgname> --template-file 
 ## Timer trigger functions
 Notification of manifests of data sources where **single_file_manifest** is set to **false** must be scheduled with a timer trigger function. Otherwise files would only be collected to manifests, but the manifests would never be closed and loaded by Agile Data Engine.
 
-Use the [notify_timer_example](functionapp/notify_timer_example/__init__.py) function as reference and create as many timer trigger functions as needed. Duplicate the timer trigger function folder (e.g. notify_timer_example), set the schedule with a cron expression in [function.json](functionapp/notify_timer_example/function.json) and define a list of data sources to be notified in the **source_ids** variable in [__init.py__](functionapp/notify_timer_example/__init__.py). Source ids point to the source ids defined in the [datasources.json](config/datasources.json) configuration file.
+Use the [notify_timer_example](functionapp/notify_timer_example/__init__.py) function as a reference and create as many timer trigger functions as needed. Duplicate the timer trigger function folder (e.g. notify_timer_example), set the schedule with a cron expression in [function.json](functionapp/notify_timer_example/function.json) and define a list of data sources to be notified in the **source_ids** variable in [__init.py__](functionapp/notify_timer_example/__init__.py). Listed source ids should match the source ids defined in the [datasources.json](config/datasources.json) configuration file.
