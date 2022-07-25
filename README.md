@@ -131,6 +131,8 @@ Deploy the Event Grid subscription like the other resources above with:
 az deployment group create --resource-group <systemtopicrgname> --template-file ./config/event_subscription.bicep --parameters ./config/<parameter_file>.json
 ```
 
+Note that you can also create multiple Event Grid Subscriptions if you have multiple source storage accounts/containers/paths.
+
 ## Timer trigger functions
 Notification of manifests of data sources where **single_file_manifest** is set to **false** must be scheduled with a timer trigger function. Otherwise files would only be collected to manifests, but the manifests would never be closed and loaded by Agile Data Engine.
 
