@@ -8,7 +8,7 @@ This repository contains a reference solution for notifying incoming source data
 - Python functions for deploying a Notifier Function App
 
 # Notifier architecture & process
-Agile Data Engine reference Notifier solution for Azure:
+Reference Notifier solution for Azure:
 
 ![Notifier architecture](docs/azure_notifier_architecture.png)
 
