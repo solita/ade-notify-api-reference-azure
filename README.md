@@ -2,7 +2,7 @@
 This repository contains a reference solution for notifying incoming source data files for Agile Data Engine Notify API (https://ade.document360.io/docs/notify-api) in Azure. The repository is provided for reference purposes only and the solution may require modifications to fit your use case. Please use at your own caution.
 
 # Dependencies
-The solution uses the [adenotifier](https://github.com/solita/adenotifier) Python library. Please specify a version in ./functionapp/requirements.txt to prevent issues with library upgrades.
+The solution uses the [adenotifier](https://github.com/solita/adenotifier) Python library. Please specify a version in the [requirements.txt](functionapp/requirements.txt) to prevent issues with library upgrades.
 
 # Architecture
 - Image
@@ -33,7 +33,7 @@ az account set --subscription <subscriptionid>
 ```
 
 ## Azure resources
-1. Go through the Bicep template and the example parameter values. Format the template according to your needs and policies, set values for parameters.
+1. Go through the [Bicep template](bicep/main.bicep) and the [example parameter values](bicep/parameters_example.json). Format the template according to your needs and policies, set values for parameters.
 
 2. Create a resource group (skip if using an existing resource group):
 ```Powershell
