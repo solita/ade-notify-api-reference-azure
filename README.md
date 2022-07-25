@@ -22,7 +22,7 @@ Reference Notifier solution for Azure:
 6. If the data source is identified, the function calls Notify API to search for open manifests for the data source.
 7. If open manifests are found, the function will add the file to the latest open manifest.
 8. If open manifests are not found, a new one will be created and the file added there.
-9. If **single_file_manifest** is set to **true**, the manifest will also be notified (closed).
+9. If **single_file_manifest** is set to **true** for the data source in the [configuration file](config/datasources.json), the manifest will also be notified (closed).
 10. Notification of data sources where **single_file_manifest** is set to **false** is done with timer functions which are triggered on a schedule (cron), i.e. files are collected to an open manifest until a schedule triggers the notification (closing) of that manifest.
 
 Notifying process in detail:
