@@ -1,14 +1,41 @@
 # Introduction
 This repository contains a reference solution for notifying incoming source data files for Agile Data Engine Notify API (https://ade.document360.io/docs/notify-api) in Azure. The repository is provided for reference purposes only and the solution may require modifications to fit your use case. Please use at your own caution.
 
+Contents:
+- Bicep templates for deploying required Azure resources
+- Python functions for deploying a Notifier Function App
+
+# Notifier architecture & process
+This diagram presents the high-level architecture of the Agile Data Engine reference Notifier solution for Azure:
+
+![Notifier architecture](docs/azure_notifier_architecture.png)
+
+## Notifying process
+
+1. Source data files are created into a Storage Account Blob Container by an external process (i.e. not Agile Data Engine nor the Notifier). This source data storage account is not part of the Notifier solution and must be managed separately.
+2. There is an Event Grid System Topic on top of the storage account and an Event Grid Subscription filtering specific events from the system topic. These Event Grid resources are not part of the Notifier solution and must be managed separately. However, there are instructions on how to create/configure them below.
+3. The Event Grid Subscription filters BlobCreated events with set parameters and feeds them to the "notifier-trigger" Storage Queue.
+4. New messages in this queue trigger the "add_to_manifest" function in the Function App.
+5. The function gets the data source configuration file "datasource-config/datasources.json" from the Notifier storage account and compares the event url to the configured data sources.
+6. If the data source is identified, the function calls Notify API to search for open manifests for the data source.
+7. If open manifests are found, the function will add the file to the latest open manifest.
+8. If open manifests are not found, a new one will be created and the file added there.
+9. If single_file_manifest is set to true, the manifest will also be notified (closed).
+10. Notification of data sources where single_file_manifest is set to false is done with timer functions which are triggered on a schedule (cron), i.e. files are collected to an open manifest until a schedule triggers the notification (closing) of that manifest.
+
+The notifying process is presented with more detail in this diagram:
+
+![Notifier process](docs/azure_notifier_process.png)
+
+## Notes
+
+- [Azure Functions Premium plan](https://docs.microsoft.com/en-us/azure/azure-functions/functions-premium-plan) is used to enable virtual network connectivity and a static public IP with the NAT Gateway.
+- Check up-to-date and region-specific pricing from [Azure documentation](https://azure.microsoft.com/en-us/pricing/calculator/). 
+- Main cost drivers are the premium App Service Plan and the NAT Gateway.
+- If you are deploying multiple environments and need to save costs, you can share the same ASP & network components between different Function Apps in different environments. This requires some changes to the Bicep template.
+
 # Dependencies
 The solution uses the [adenotifier](https://github.com/solita/adenotifier) Python library. Please specify a version in the [requirements.txt](functionapp/requirements.txt) to prevent issues with library upgrades.
-
-# Architecture
-- Image
-- Azure Functions premium plan
-    - Network, NAT, static public IP
-    - Shared premium plan & network for different environments possible to reduce cost if needed
 
 # Deployment
 ## Prerequisites
