@@ -6,7 +6,7 @@ This repository contains a reference solution for notifying incoming source data
 - Python functions for deploying a Notifier Function App
 
 # Notifier architecture & process
-This diagram presents the high-level architecture of the Agile Data Engine reference Notifier solution for Azure:
+Agile Data Engine reference Notifier solution for Azure:
 
 ![Notifier architecture](docs/azure_notifier_architecture.png)
 
@@ -23,7 +23,7 @@ This diagram presents the high-level architecture of the Agile Data Engine refer
 9. If **single_file_manifest** is set to **true**, the manifest will also be notified (closed).
 10. Notification of data sources where **single_file_manifest** is set to **false** is done with timer functions which are triggered on a schedule (cron), i.e. files are collected to an open manifest until a schedule triggers the notification (closing) of that manifest.
 
-The notifying process is presented with more detail in this diagram:
+Notifying process in detail:
 
 ![Notifier process](docs/azure_notifier_process.png)
 
