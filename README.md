@@ -59,7 +59,7 @@ func azure functionapp publish <appname>
 ```
 
 # Configuration
-## Update Notify API secrets in key vault
+## Update Notify API secrets in Key Vault
 The Key Vault secrets are deployed with dummy values and must be updated to the Notify API key and secret. Agile Data Engine support team will provide the secrets:
 - notify-api-key
 - notify-api-key-secret
@@ -82,10 +82,10 @@ Configure data sources into a configuration file **datasources.json** and upload
 See configuration examples in [config/datasources.json](config/datasources.json).
 
 ## Event Grid subscription
-To get BlobCreated events from the source data storage account to the notifier queue, an event subscription is needed. You can create an event subscription in Azure Portal, CLI or using a template. More details are available in [Microsoft documentation](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage?tabs=event-grid-event-schema).
+To get BlobCreated events from the source data storage account to the notifier queue, an Event Grid subscription is needed. You can create an event subscription in Azure Portal or by using the provided Bicep template. More details are available in [Microsoft documentation](https://docs.microsoft.com/en-us/azure/event-grid/event-schema-blob-storage?tabs=event-grid-event-schema).
 
 Use at least the following settings when creating the event subscription:
-| Setting  | Value | Notes |
+| Setting | Value | Notes |
 | --- | --- | --- |
 | Event schema | Event Grid Schema | - |
 | Event types | Blob Created | - |
@@ -96,3 +96,8 @@ Use at least the following settings when creating the event subscription:
 | Advanced filters: data.ContentLength | > 0 | This prevents duplicate events. |
 
 There is a [Bicep template](config/event_subscription.bicep) and an example [parameter file](config/parameters_example.json) in the **config** folder which can be used to deploy the subscription. Format the template and set the parameters according to your setup.
+
+Deploy the Event Grid subscription like the other resources above with:
+```Powershell
+az deployment group create --resource-group <systemtopicrgname> --template-file ./config/event_subscription.bicep --parameters ./config/<parameter_file>.json
+```
