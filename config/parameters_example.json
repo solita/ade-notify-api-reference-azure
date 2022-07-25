@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "env": {
+            "value": "dev"
+        },
+        "notifierStorageName": {
+            "value": "stadenotifier234dev"
+        },
+        "notifierStorageRg": {
+            "value": "rg-adenotifier234-dev"
+        },
+        "sourceDataContainerName": {
+            "value": "examplecontainer"
+        },
+        "systemTopicName": {
+            "value": "evgt-examplesystemtopic"
+        },
+        "systemTopicRg": {
+            "value": "rg-examplesystemtopicrg"
+        }
+    }
+}
