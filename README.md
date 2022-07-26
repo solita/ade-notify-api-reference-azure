@@ -81,11 +81,13 @@ az deployment group create --resource-group <rgname> --template-file ./bicep/mai
 
 ## Functions
 
-Deploy function app:
+Deploy Function App:
 ```Powershell
 cd functionapp
 func azure functionapp publish <appname>
 ```
+
+If you get *Timed out waiting for SCM to update the Environment Settings*, try to run the Function App deployment again.
 
 # Configuration
 ## Update Notify API secrets in Key Vault
